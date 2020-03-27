@@ -37,7 +37,6 @@ export default {
   #div-2 {
     width: 300px;
     height: 300px;
-    position: relative;
     background: red;
   }
 }

@@ -28,7 +28,15 @@ export default {
         screenX: 0
       },
       contextItems: [
-        { text: "aaaaa" },
+        {
+          text: "aaaaa",
+          items: [
+            { text: "itemb" },
+            { text: "itemb" },
+            { text: "itemb" },
+            { text: "itemb" }
+          ]
+        },
         { text: "aaaaa" },
         { text: "aaaaa" },
         { text: "aaaaa" },
@@ -68,7 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 .context-app--main-container {
-  position: absolute;
+  position: fixed;
   background: blue;
   color: white;
 }
