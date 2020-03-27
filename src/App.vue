@@ -1,22 +1,47 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="div-1">
+      div 1
+    </div>
+    <div id="div-2">
+      div 2
+    </div>
+    <ContextApp :target="'#div-2'" />
+    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
+    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import ContextApp from "./ContextApp/ContextApp.vue";
+// import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    ContextApp
+    // HelloWorld, ContextApp
   }
-}
+};
 </script>
 
-<style>
+<style lang="scss">
+#app {
+  display: flex;
+  justify-content: space-around;
+  #div-1 {
+    width: 300px;
+    height: 300px;
+    background: green;
+  }
+  #div-2 {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    background: red;
+  }
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
