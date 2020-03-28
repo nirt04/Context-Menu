@@ -108,14 +108,14 @@ export default {
     // }
   },
   watch: {
-    isContextVisable(newValue, oldValue) {
-      if (!newValue) {
-        const allChilds = document.querySelectorAll(
-          `.${this.$attrs.target}-context.context-child-lgl`
-        );
-        allChilds.forEach(e => (e.style.display = "none"));
-      }
-    }
+    // isContextVisable(newValue, oldValue) {
+    //   if (!newValue) {
+    //     const allChilds = document.querySelectorAll(
+    //       `.${this.$attrs.target}-context.context-child-lgl`
+    //     );
+    //     allChilds.forEach(e => (e.style.display = "none"));
+    //   }
+    // }
   },
   data() {
     return {
@@ -232,6 +232,10 @@ export default {
         e.clientX - contextEl.getBoundingClientRect().width;
 
       this.isContextVisable = !this.isContextVisable;
+      if (!this.isContextVisable) {
+        const allChilds = document.querySelectorAll( `.${this.$attrs.target}-context.context-child-lgl` );
+        allChilds.forEach(e => (e.style.display = "none"));
+      }
     }
   },
   mounted() {
@@ -260,6 +264,5 @@ export default {
     padding: 5px;
     display: block;
   }
-  
 }
 </style>
