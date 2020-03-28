@@ -219,9 +219,9 @@ export default {
     },
     onOptionHover(optionId, parentId) {
       // const res =
-      const resetNestedSelection = id =>{
+      const resetNestedSelection = id => {
         // TO DO
-      }
+      };
       debugger;
       const parent = this.findContextItemById(parentId);
       const curSelected =
@@ -231,10 +231,13 @@ export default {
       }
 
       if (!parent.selectedOption || (curSelected && !curSelected.items)) {
+        resetNestedSelection();
+
         return (parent.selectedOption = optionId);
       } else {
         setTimeout(() => {
           if (parent.selectedOptionEcho === optionId) {
+            resetNestedSelection();
             parent.selectedOption = optionId;
           }
         }, 200);
