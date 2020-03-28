@@ -10,6 +10,7 @@ export default {
           "span",
           {
             style: {
+              // padding: 0,
               background: `${
                 this.findContextItemById(parentId) &&
                 this.findContextItemById(parentId).selectedOption === e.id
@@ -40,6 +41,15 @@ export default {
                   this.onContextExpend(e.id);
                 }
               },
+              style: {
+                padding: 0,
+                background: `${
+                  this.findContextItemById(parentId) &&
+                  this.findContextItemById(parentId).selectedOption === e.id
+                    ? "green"
+                    : "blue"
+                }`
+              },
               class: `${e.id || ""} ${this.$attrs.target}-context`
             },
             [
@@ -50,7 +60,12 @@ export default {
                   // on: { onmouseover : this.onContextClick, click: this.onContextClick },
                   class: `${e.id}-childs context-child-lgl ${this.$attrs.target}-context`,
                   style: {
-                    display: `none`
+                    display: `${
+                      this.findContextItemById(parentId) &&
+                      this.findContextItemById(parentId).selectedOption === e.id
+                        ? "block"
+                        : `none`
+                    }`
                   }
                 },
                 renderRecursive(e.items, e.id)
@@ -112,9 +127,11 @@ export default {
       contextItems: {
         id: "root",
         selectedOption: null,
+        selectedOptionEcho: null,
         items: [
           {
             selectedOption: null,
+            selectedOptionEcho: null,
             id: "parent1",
             text: "parent1",
             items: [
@@ -123,6 +140,7 @@ export default {
               { id: "parent1-child-3", text: "itemb" },
               {
                 selectedOption: null,
+                selectedOptionEcho: null,
                 id: "parent2",
                 text: "parent2",
                 items: [
@@ -168,7 +186,16 @@ export default {
       debugger;
       // const res =
       const parent = this.findContextItemById(parentId);
-      parent.selectedOption = optionId;
+      parent.selectedOptionEcho = optionId;
+      if (!parent.selectedOption) parent.selectedOption = optionId;
+      else {
+        setTimeout(() => {
+          if (parent.selectedOptionEcho === optionId) {
+            parent.selectedOption = optionId;
+          }
+        }, 50);
+      }
+
       // this.contextItems
       debugger;
       // we need to recursive search the parent id, and set new selected option
@@ -191,7 +218,7 @@ export default {
 
       el.style.left = `${parentEl.bound.x + contextContainerEl.clientWidth}px`;
       el.style.top = `${parentEl.bound.y}px`;
-      el.style.display = "block";
+      // el.style.display = "block";
       // el.postion;
     },
     /* eslint-disable */
@@ -230,8 +257,9 @@ export default {
   background: blue;
   color: white;
   span {
-    padding: 0 5px;
+    padding: 5px;
     display: block;
   }
+  
 }
 </style>
