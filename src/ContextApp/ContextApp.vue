@@ -14,8 +14,8 @@ export default {
               background: `${
                 this.findContextItemById(parentId) &&
                 this.findContextItemById(parentId).selectedOption === e.id
-                  ? "green"
-                  : "blue"
+                  ? "orange"
+                  : "white"
               }`
             },
             class: `${e.id || ""} ${this.$attrs.target}-context`,
@@ -26,7 +26,7 @@ export default {
             }
           },
 
-          e.text
+          ` ${e.items ? "<" : ""} ${e.text}`
         );
         if (e.items) {
           // if items we want to listen hover and visable true his childs accordins to his fixed pos
@@ -46,8 +46,8 @@ export default {
                 background: `${
                   this.findContextItemById(parentId) &&
                   this.findContextItemById(parentId).selectedOption === e.id
-                    ? "green"
-                    : "blue"
+                    ? "orange"
+                    : "white"
                 }`
               },
               class: `${e.id || ""} ${this.$attrs.target}-context`
@@ -92,6 +92,13 @@ export default {
     return createElement(
       "div",
       {
+        on: {
+          blur: () => {
+            this.isContextVisable = false;
+            this.colapseExpanded();
+            // this.onOptionHover(e.id, parentId);
+          }
+        },
         style: {
           left: `${this.contextPosition.screenX}px`,
           top: `${this.contextPosition.screenY}px`,
@@ -163,6 +170,22 @@ export default {
     };
   },
   methods: {
+    setElementPosition(el, parentEl, id, rtl, final) {
+      const contextContainerEl = document.querySelector(
+        `.${this.$attrs.target}-context.${id}`
+      );
+      const parentBound = parentEl.getBoundingClientRect();
+      if (!rtl)
+        el.style.left = `${parentBound.x + contextContainerEl.clientWidth}px`;
+      else el.style.left = `${parentBound.x - el.clientWidth}px`;
+
+      // el.style.left = `${parentBound.x - contextContainerEl.clientWidth}px`;
+      el.style.top = `${parentBound.y}px`;
+      if (this.isElementOverflowScreen(el) && !final) {
+        this.setElementPosition(el, parentEl, id, !rtl, "final");
+      }
+    },
+
     findContextItemById(id) {
       // let item = false;
       if (id === "root") return this.contextItems;
@@ -183,45 +206,58 @@ export default {
       // return item;
     },
     onOptionHover(optionId, parentId) {
-      debugger;
       // const res =
       const parent = this.findContextItemById(parentId);
       parent.selectedOptionEcho = optionId;
       if (!parent.selectedOption) parent.selectedOption = optionId;
       else {
-        setTimeout(() => {
-          if (parent.selectedOptionEcho === optionId) {
-            parent.selectedOption = optionId;
-          }
-        }, 50);
+        // setTimeout(() => {
+        // if (parent.selectedOptionEcho === optionId) {
+        parent.selectedOption = optionId;
+        // }
+        // }, 60);
       }
 
       // this.contextItems
-      debugger;
+
       // we need to recursive search the parent id, and set new selected option
     },
+    isElementOverflowScreen(el) {
+      const rect = el.getBoundingClientRect();
+
+      return (
+        rect.x < 0 || rect.y < 0
+        // ||
+        // rect.x + rect.width < 0 ||
+        // rect.y + rect.height < 0 ||
+        // rect.x > window.innerWidth ||
+        // rect.y > window.innerHeight
+      );
+    },
     onContextExpend(id) {
-      const parentEl = {
-        el: document.querySelector(`.${this.$attrs.target}-context.${id}`),
-        bound: document
-          .querySelector(`.${this.$attrs.target}-context.${id}`)
-          .getBoundingClientRect()
-      };
-      const contextContainerEl = document.querySelector(
+      const parentEl = document.querySelector(
         `.${this.$attrs.target}-context.${id}`
       );
       const el = document.querySelector(
         `.${this.$attrs.target}-context.${id}-childs`
       );
 
+      this.setElementPosition(el, parentEl, id, true);
       // el.style.display = "block";
 
-      el.style.left = `${parentEl.bound.x + contextContainerEl.clientWidth}px`;
-      el.style.top = `${parentEl.bound.y}px`;
+      // el.style.left = `${parentEl.bound.x + contextContainerEl.clientWidth}px`;
+      // el.style.top = `${parentEl.bound.y}px`;
       // el.style.display = "block";
       // el.postion;
     },
     /* eslint-disable */
+    colapseExpanded() {
+      this.isContextVisable = false;
+      const allChilds = document.querySelectorAll(
+        `.${this.$attrs.target}-context.context-child-lgl`
+      );
+      allChilds.forEach(e => (e.style.display = "none"));
+    },
 
     onContextClick(e) {
       const contextEl = document.querySelector(
@@ -231,10 +267,11 @@ export default {
       this.contextPosition.screenX =
         e.clientX - contextEl.getBoundingClientRect().width;
 
+      // TODO CHECK IF ROOT CONTAINER IS in valid position
+
       this.isContextVisable = !this.isContextVisable;
       if (!this.isContextVisable) {
-        const allChilds = document.querySelectorAll( `.${this.$attrs.target}-context.context-child-lgl` );
-        allChilds.forEach(e => (e.style.display = "none"));
+        this.colapseExpanded();
       }
     }
   },
@@ -246,6 +283,16 @@ export default {
       this.onContextClick(e);
       console.log("Context clicked over", elContextTarget);
     });
+    window.addEventListener("click", e => {
+      // this.debugger;
+      if (!e.target || !e.target.classList.contains(this.$attrs.target))
+        this.colapseExpanded();
+    });
+    window.oncontextmenu = e => {
+      debugger;
+      if (!e.target || !e.target.classList.contains(this.$attrs.target))
+        this.colapseExpanded();
+    };
   }
 };
 </script>
@@ -253,13 +300,15 @@ export default {
 <style lang="scss" scoped>
 .context-child-lgl {
   position: fixed;
-  background: blue;
+  box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.24);
+  background: white;
 }
 .context-app--main-container {
+  box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.24);
   position: fixed;
   // padding: 10px;
-  background: blue;
-  color: white;
+  background: white;
+  color: black;
   span {
     padding: 5px;
     display: block;
