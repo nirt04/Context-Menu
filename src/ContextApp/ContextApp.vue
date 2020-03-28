@@ -133,7 +133,7 @@ export default {
     };
   },
   methods: {
-    findParentById(id) {
+    findContextItemById(id) {
       // let item = false;
       const recursiveSearch = items => {
         let item = null;
@@ -152,7 +152,7 @@ export default {
       // return item;
     },
     onOptionHover(parentId, id) {
-      const res = this.findParentById("parent2-child-3");
+      const res = this.findContextItemById("parent2-child-3");
       // this.contextItems
       debugger;
       // we need to recursive search the parent id, and set new selected option
