@@ -1,4 +1,5 @@
 <script>
+import { eventBus } from "../main";
 export default {
   /* eslint-disable */
   render: function(createElement) {
@@ -26,7 +27,7 @@ export default {
             }
           },
 
-          ` ${e.items ? "<" : ""} ${e.text}`
+          `${e.items && this.$attrs.rtl ? "<" : ""} ${e.text} ${e.items && !this.$attrs.rtl ? ">" : ""}`
         );
         if (e.items) {
           // if items we want to listen hover and visable true his childs accordins to his fixed pos
@@ -242,7 +243,7 @@ export default {
         `.${this.$attrs.target}-context.${id}-childs`
       );
 
-      this.setElementPosition(el, parentEl, id, true);
+      this.setElementPosition(el, parentEl, id, this.$attrs.rtl);
       // el.style.display = "block";
 
       // el.style.left = `${parentEl.bound.x + contextContainerEl.clientWidth}px`;
@@ -260,6 +261,7 @@ export default {
     },
 
     onContextClick(e) {
+      eventBus.$emit("windowContextMenu", this.$attrs.target);
       const contextEl = document.querySelector(
         `.${this.$attrs.target}-context.context-app--main-container`
       );
@@ -277,7 +279,7 @@ export default {
   },
   mounted() {
     const elContextTarget = document.querySelector(`.${this.$attrs.target}`);
-
+    const that = this;
     elContextTarget.addEventListener("contextmenu", e => {
       e.preventDefault();
       this.onContextClick(e);
@@ -288,11 +290,13 @@ export default {
       if (!e.target || !e.target.classList.contains(this.$attrs.target))
         this.colapseExpanded();
     });
-    window.oncontextmenu = e => {
-      debugger;
-      if (!e.target || !e.target.classList.contains(this.$attrs.target))
-        this.colapseExpanded();
-    };
+    window.legalContext = this;
+
+    eventBus.$on("windowContextMenu", target => {
+      // debugger;
+      // return;
+      if (target !== this.$attrs.target) this.colapseExpanded();
+    });
   }
 };
 </script>

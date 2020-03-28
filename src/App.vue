@@ -1,22 +1,31 @@
 <template>
   <div id="app">
     <div class="div-1" id="div-1">
-      div 1
+      LTR
     </div>
     <div class="div-2" id="div-2">
-      div 2
+      RTL
     </div>
     <ContextApp :target="'div-1'" />
+    <ContextApp :rtl="true" :target="'div-2'" />
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 import ContextApp from "./ContextApp/ContextApp.vue";
 // import HelloWorld from './components/HelloWorld.vue'
-
+import { eventBus } from "./main";
 export default {
+  mounted() {
+    // window.oncontextmenu = e => {
+    //   // TODO Event Bus
+    //   eventBus.$emit("windowContextMenu", e);
+    //   // debugger;
+    // };
+  },
   name: "App",
   components: {
     ContextApp
