@@ -1,6 +1,10 @@
 <script>
 import { eventBus } from "../main";
 export default {
+  created() {
+    this.contextItemsCloned = JSON.parse(JSON.stringify(this.contextItems));
+  },
+
   /* eslint-disable */
   render: function(createElement) {
     let contextItems = [];
@@ -24,6 +28,8 @@ export default {
             class: `${e.id || ""} ${this.$attrs.target}-context`,
             on: {
               mouseover: () => {
+                // BUG DOESNT ALLWAYS TRIGGER
+
                 this.onOptionHover(e.id, parentId);
               }
             }
@@ -136,6 +142,7 @@ export default {
         screenY: 0,
         screenX: 0
       },
+      contextItemsCloned: null,
       contextItems: {
         id: "root",
         selectedOption: null,
@@ -212,13 +219,16 @@ export default {
     },
     onOptionHover(optionId, parentId) {
       // const res =
+      debugger;
       const parent = this.findContextItemById(parentId);
-      const curSelected = this.findContextItemById(parent.selectedOption) || null;
+      const curSelected =
+        this.findContextItemById(parent.selectedOption) || null;
       if (parent.selectedOptionEcho !== undefined) {
         parent.selectedOptionEcho = optionId;
       }
 
-      if (!parent.selectedOption || (curSelected && !curSelected.items)) parent.selectedOption = optionId;
+      if (!parent.selectedOption || (curSelected && !curSelected.items))
+        return (parent.selectedOption = optionId);
       else {
         setTimeout(() => {
           if (parent.selectedOptionEcho === optionId) {
@@ -266,6 +276,7 @@ export default {
         `.${this.$attrs.target}-context.context-child-lgl`
       );
       allChilds.forEach(e => (e.style.display = "none"));
+      this.contextItems = JSON.parse(JSON.stringify(this.contextItemsCloned));
     },
 
     onContextClick(e) {
