@@ -14,7 +14,9 @@ export default {
               // padding: 0,
               background: `${
                 this.findContextItemById(parentId) &&
-                this.findContextItemById(parentId).selectedOption === e.id
+                (this.findContextItemById(parentId).selectedOption === e.id ||
+                  this.findContextItemById(parentId).selectedOptionEcho ===
+                    e.id)
                   ? "orange"
                   : "white"
               }`
@@ -27,7 +29,9 @@ export default {
             }
           },
 
-          `${e.items && this.$attrs.rtl ? "<" : ""} ${e.text} ${e.items && !this.$attrs.rtl ? ">" : ""}`
+          `${e.items && this.$attrs.rtl ? "<" : ""} ${e.text} ${
+            e.items && !this.$attrs.rtl ? ">" : ""
+          }`
         );
         if (e.items) {
           // if items we want to listen hover and visable true his childs accordins to his fixed pos
@@ -209,14 +213,18 @@ export default {
     onOptionHover(optionId, parentId) {
       // const res =
       const parent = this.findContextItemById(parentId);
-      parent.selectedOptionEcho = optionId;
-      if (!parent.selectedOption) parent.selectedOption = optionId;
+      const curSelected = this.findContextItemById(parent.selectedOption) || null;
+      if (parent.selectedOptionEcho !== undefined) {
+        parent.selectedOptionEcho = optionId;
+      }
+
+      if (!parent.selectedOption || (curSelected && !curSelected.items)) parent.selectedOption = optionId;
       else {
-        // setTimeout(() => {
-        // if (parent.selectedOptionEcho === optionId) {
-        parent.selectedOption = optionId;
-        // }
-        // }, 60);
+        setTimeout(() => {
+          if (parent.selectedOptionEcho === optionId) {
+            parent.selectedOption = optionId;
+          }
+        }, 200);
       }
 
       // this.contextItems
