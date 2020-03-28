@@ -3,10 +3,10 @@
     <div id="div-1">
       div 1
     </div>
-    <div id="div-2">
+    <div class="div-2" id="div-2">
       div 2
     </div>
-    <ContextApp :target="'#div-2'" />
+    <ContextApp :target="'div-2'" />
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
