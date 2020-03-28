@@ -163,9 +163,9 @@ export default {
                 id: "parent2",
                 text: "parent2",
                 items: [
-                  { id: "parent2-child-1", text: "itemb" },
-                  { id: "parent2-child-2", text: "itemb" },
-                  { id: "parent2-child-3", text: "itemb" }
+                  { id: "parent2-child-1", text: "itemc" },
+                  { id: "parent2-child-2", text: "itemc" },
+                  { id: "parent2-child-3", text: "itemc" }
                 ]
               }
             ]
@@ -219,6 +219,9 @@ export default {
     },
     onOptionHover(optionId, parentId) {
       // const res =
+      const resetNestedSelection = id =>{
+        // TO DO
+      }
       debugger;
       const parent = this.findContextItemById(parentId);
       const curSelected =
@@ -227,9 +230,9 @@ export default {
         parent.selectedOptionEcho = optionId;
       }
 
-      if (!parent.selectedOption || (curSelected && !curSelected.items))
+      if (!parent.selectedOption || (curSelected && !curSelected.items)) {
         return (parent.selectedOption = optionId);
-      else {
+      } else {
         setTimeout(() => {
           if (parent.selectedOptionEcho === optionId) {
             parent.selectedOption = optionId;
@@ -271,11 +274,13 @@ export default {
     },
     /* eslint-disable */
     colapseExpanded() {
+      debugger;
       this.isContextVisable = false;
       const allChilds = document.querySelectorAll(
         `.${this.$attrs.target}-context.context-child-lgl`
       );
       allChilds.forEach(e => (e.style.display = "none"));
+
       this.contextItems = JSON.parse(JSON.stringify(this.contextItemsCloned));
     },
 
