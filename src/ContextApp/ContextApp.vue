@@ -4,15 +4,23 @@ export default {
   render: function(createElement) {
     let contextItems = [];
 
-    const renderRecursive = items => {
+    const renderRecursive = (items, parentId) => {
       let res = items.map(e => {
         const p = createElement(
           "span",
           {
+            style: {
+              background: `${
+                this.findContextItemById(parentId) &&
+                this.findContextItemById(parentId).selectedOption === e.id
+                  ? "green"
+                  : "blue"
+              }`
+            },
             class: `${e.id || ""} ${this.$attrs.target}-context`,
             on: {
-              click: () => {
-                this.onOptionHover(e.id);
+              mouseover: () => {
+                this.onOptionHover(e.id, parentId);
               }
             }
           },
@@ -28,6 +36,7 @@ export default {
             {
               on: {
                 mouseover: () => {
+                  this.onOptionHover(e.id, parentId);
                   this.onContextExpend(e.id);
                 }
               },
@@ -44,7 +53,7 @@ export default {
                     display: `none`
                   }
                 },
-                renderRecursive(e.items)
+                renderRecursive(e.items, e.id)
               )
             ]
           );
@@ -54,7 +63,10 @@ export default {
       return res;
     };
 
-    contextItems = renderRecursive(this.contextItems.items);
+    contextItems = renderRecursive(
+      this.contextItems.items,
+      this.contextItems.id
+    );
 
     // TODO Visablity hidden every inner class unless he's targeted by the hover class track var
 
@@ -135,6 +147,7 @@ export default {
   methods: {
     findContextItemById(id) {
       // let item = false;
+      if (id === "root") return this.contextItems;
       const recursiveSearch = items => {
         let item = null;
         for (let i = 0; i < items.length; i++) {
@@ -151,8 +164,11 @@ export default {
       return recursiveSearch(this.contextItems.items);
       // return item;
     },
-    onOptionHover(parentId, id) {
-      const res = this.findContextItemById("parent2-child-3");
+    onOptionHover(optionId, parentId) {
+      debugger;
+      // const res =
+      const parent = this.findContextItemById(parentId);
+      parent.selectedOption = optionId;
       // this.contextItems
       debugger;
       // we need to recursive search the parent id, and set new selected option
