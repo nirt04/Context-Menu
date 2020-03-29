@@ -274,6 +274,8 @@ export default {
   },
   methods: {
     setElementPosition(el, parentEl, id, rtl, final) {
+      debugger;
+      // return;
       const contextContainerEl = document.querySelector(
         `.${this.$attrs.target}-context.${id}`
       );
@@ -284,6 +286,10 @@ export default {
 
       // el.style.left = `${parentBound.x - contextContainerEl.clientWidth}px`;
       el.style.top = `${parentBound.y - 5}px`;
+      debugger;
+      if (this.isElementOverflowScreenY(el))
+        el.style.top = `${window.innerHeight - el.clientHeight - 5 || 1}px`;
+
       if (this.isElementOverflowScreen(el) && !final) {
         this.setElementPosition(el, parentEl, id, !rtl, "final");
       }
@@ -363,6 +369,22 @@ export default {
         // rect.y > window.innerHeight
       );
     },
+    isElementOverflowScreenY(el, rect) {
+      debugger;
+      // const rect =
+      if (!rect) rect = el.getBoundingClientRect();
+
+      return (
+        rect.y + rect.height > window.innerHeight
+
+        // rect.x < 0 || rect.y < 0
+        // ||
+        // rect.x + rect.width < 0 ||
+        // rect.y + rect.height < 0 ||
+        // // rect.x > window.innerWidth ||
+        // rect.y > window.innerHeight
+      );
+    },
     onContextExpend(id) {
       const parentEl = document.querySelector(
         `.${this.$attrs.target}-context.${id}`
@@ -401,11 +423,19 @@ export default {
       const contextEl = document.querySelector(
         `.${this.$attrs.target}-context.context-app--main-container`
       );
+
       this.contextPosition.screenY = e.clientY;
       this.contextPosition.screenX =
         e.clientX -
         (this.$attrs.rtl ? contextEl.getBoundingClientRect().width : 0);
-
+      if (
+        this.isElementOverflowScreenY(null, {
+          y: e.clientY,
+          height: contextEl.clientHeight
+        })
+      )
+        this.contextPosition.screenY =
+          window.innerHeight - contextEl.clientHeight - 5 || 1;
       // TODO CHECK IF ROOT CONTAINER IS in valid position
 
       this.isContextVisable = !this.isContextVisable;
@@ -418,7 +448,6 @@ export default {
     const elContextTarget = document.querySelector(`.${this.$attrs.target}`);
     const that = this;
     elContextTarget.addEventListener("contextmenu", e => {
-      debugger;
       e.preventDefault();
 
       this.isContextVisable = false;
