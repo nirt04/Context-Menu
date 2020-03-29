@@ -73,7 +73,11 @@ export default {
               textAlign: this.$attrs.rtl ? "end" : "start",
               display: e.items || e.icon ? "flex" : "block",
               alignItems: "center",
-              justifyContent: e.items ? "space-between" : this.$attrs.rtl ? "flex-end" :  "flex-start",
+              justifyContent: e.items
+                ? "space-between"
+                : this.$attrs.rtl
+                ? "flex-end"
+                : "flex-start",
               padding: "10px 0 ",
               paddingLeft: !e.items && this.$attrs.rtl ? "50px" : "5px",
               paddingRight: !e.items && !this.$attrs.rtl ? "50px" : "5px",
@@ -226,8 +230,16 @@ export default {
                 id: "parent2",
                 text: "parent2",
                 items: [
-                  { id: "parent2-child-1", text: "itemc" },
-                  { id: "parent2-child-2", text: "itemc" },
+                  {
+                    id: "parent2-child-1",
+                    text: "itemc",
+                    icon: "fas fa-archway"
+                  },
+                  {
+                    id: "parent2-child-2",
+                    text: "itemc",
+                    icon: "fas fa-archway"
+                  },
                   { id: "parent2-child-3", text: "itemc" }
                 ]
               }
@@ -425,9 +437,9 @@ span {
   > span:last-child {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    span {
-      // border-bottom-left-radius: 5px;
-      // border-bottom-right-radius: 5px;
+    > span {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
     }
   }
   position: fixed;
@@ -439,7 +451,7 @@ span {
   > span:first-child {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    span {
+    > span {
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
     }
@@ -447,7 +459,7 @@ span {
   > span:last-child {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    span {
+    > span {
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
     }
