@@ -55,8 +55,6 @@ export default {
         );
         const iconTextCompute = () => {
           if (e.icon) {
-            debugger;
-
             return this.$attrs.rtl
               ? createElement("span", {}, [textEl, icon])
               : createElement("span", {}, [icon, textEl]);
@@ -135,7 +133,9 @@ export default {
                 "div",
                 {
                   // on: { onmouseover : this.onContextClick, click: this.onContextClick },
-                  class: `${e.id}-childs context-child-lgl-${this.$attrs.rtl? 'rtl': 'ltr'} ${this.$attrs.target}-context`,
+                  class: `${e.id}-childs context-child-lgl-${
+                    this.$attrs.rtl ? "rtl" : "ltr"
+                  } ${this.$attrs.target}-context`,
                   style: {
                     // width: "150%",
                     display: `${
@@ -372,12 +372,17 @@ export default {
     colapseExpanded() {
       this.isContextVisable = false;
       const allChilds = document.querySelectorAll(
-        
-        `.${this.$attrs.target}-context.context-child-lgl-${this.$attrs.rtl? 'rtl': 'ltr'}`
+        `.${this.$attrs.target}-context.context-child-lgl-${
+          this.$attrs.rtl ? "rtl" : "ltr"
+        }`
       );
       allChilds.forEach(e => (e.style.display = "none"));
 
       this.contextItems = JSON.parse(JSON.stringify(this.contextItemsCloned));
+    },
+    onWindowContextClick(e) {
+      if (!e.target || !e.target.classList.contains(this.$attrs.target))
+        this.colapseExpanded();
     },
 
     onContextClick(e) {
@@ -386,7 +391,9 @@ export default {
         `.${this.$attrs.target}-context.context-app--main-container`
       );
       this.contextPosition.screenY = e.clientY;
-      this.contextPosition.screenX = e.clientX -  (this.$attrs.rtl ? contextEl.getBoundingClientRect().width : 0);
+      this.contextPosition.screenX =
+        e.clientX -
+        (this.$attrs.rtl ? contextEl.getBoundingClientRect().width : 0);
 
       // TODO CHECK IF ROOT CONTAINER IS in valid position
 
@@ -409,12 +416,13 @@ export default {
       if (!e.target || !e.target.classList.contains(this.$attrs.target))
         this.colapseExpanded();
     });
-    window.legalContext = this;
+    window.oncontextmenu = event => {
+      eventBus.$emit("onGlobalWindowContext", event);
+    };
 
-    eventBus.$on("windowContextMenu", target => {
-      //
-      // return;
-      if (target !== this.$attrs.target) this.colapseExpanded();
+    eventBus.$on("onGlobalWindowContext", event => {
+      if (!event.target || !event.target.classList.contains(this.$attrs.target))
+        this.colapseExpanded();
     });
   }
 };
