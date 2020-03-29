@@ -103,6 +103,13 @@ export default {
 
           contentElements()
         );
+        if (e.seperator) {
+          return createElement("hr", {
+            style: {
+              opacity: "0.35"
+            }
+          });
+        }
         if (e.items) {
           // if items we want to listen hover and visable true his childs accordins to his fixed pos
 
@@ -217,6 +224,7 @@ export default {
         items: [
           { text: "aaaaa", id: "root-child-1" },
           { text: "aaaaa", id: "root-child-2" },
+          { seperator: true, id: "root-child-sep" },
           {
             selectedOption: null,
             selectedOptionEcho: null,
@@ -225,6 +233,7 @@ export default {
             text: "parent1",
             items: [
               { id: "parent1-child-1", text: "itemb" },
+              { seperator: true, id: "parent1-child-sep" },
               { id: "parent1-child-2", text: "itemb" },
               { id: "parent1-child-3", text: "itemb" },
               {
@@ -272,7 +281,7 @@ export default {
       else el.style.left = `${parentBound.x - el.clientWidth}px`;
 
       // el.style.left = `${parentBound.x - contextContainerEl.clientWidth}px`;
-      el.style.top = `${parentBound.y}px`;
+      el.style.top = `${parentBound.y - 5}px`;
       if (this.isElementOverflowScreen(el) && !final) {
         this.setElementPosition(el, parentEl, id, !rtl, "final");
       }
@@ -429,6 +438,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+hr {
+  margin: 5px;
+}
 span {
   cursor: pointer;
   font-size: 16px;
@@ -436,20 +448,22 @@ span {
 }
 .context-child-lgl-rtl {
   > span:first-child {
-    border-top-left-radius: 5px;
+    margin-top: 5px;
+    // border-top-left-radius: 5px;
     // border-top-right-radius: 5px;
     span {
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
+      // border-top-left-radius: 5px;
+      // border-top-right-radius: 5px;
     }
   }
   > span:last-child {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    > span {
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
+    margin-bottom: 5px;
+    // border-bottom-left-radius: 5px;
+    // border-bottom-right-radius: 5px;
+    // > span {
+    //   border-bottom-left-radius: 5px;
+    //   border-bottom-right-radius: 5px;
+    // }
   }
   position: fixed;
   border-radius: 5px;
@@ -459,18 +473,21 @@ span {
 .context-child-lgl-ltr {
   > span:first-child {
     // border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    margin-top: 5px;
+    // border-top-right-radius: 5px;
     span {
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
+      // border-top-left-radius: 5px;
+      // border-top-right-radius: 5px;
     }
   }
   > span:last-child {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    margin-bottom: 5px;
+    // border-bottom-left-radius: 5px;
+    // border-bottom-right-radius: 5px;
     > span {
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
+      //  margin-bottom: 5px;
+      // border-bottom-left-radius: 5px;
+      // border-bottom-right-radius: 5px;
     }
   }
   position: fixed;
@@ -480,16 +497,18 @@ span {
 }
 .context-app--main-container {
   > span:first-child {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    // border-top-left-radius: 5px;
+    // border-top-right-radius: 5px;
+    margin-top: 5px;
     > span {
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
     }
   }
   > span:last-child {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    margin-bottom: 5px;
+    // border-bottom-left-radius: 5px;
+    // border-bottom-right-radius: 5px;
     > span {
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
