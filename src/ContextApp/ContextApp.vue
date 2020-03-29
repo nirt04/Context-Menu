@@ -447,6 +447,7 @@ span {
   font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 }
 .context-child-lgl-rtl {
+    border-top-right-radius: 0px !important;
   > span:first-child {
     margin-top: 5px;
     // border-top-left-radius: 5px;
@@ -471,6 +472,7 @@ span {
   background: white;
 }
 .context-child-lgl-ltr {
+   border-top-left-radius: 0px !important;
   > span:first-child {
     // border-top-left-radius: 5px;
     margin-top: 5px;
