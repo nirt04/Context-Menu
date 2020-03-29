@@ -378,6 +378,7 @@ export default {
     elContextTarget.addEventListener("contextmenu", e => {
       e.preventDefault();
       this.isContextVisable = false;
+      this.colapseExpanded();
       this.onContextClick(e);
       console.log("Context clicked over", elContextTarget);
     });
