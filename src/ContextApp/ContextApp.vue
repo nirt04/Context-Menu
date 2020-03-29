@@ -73,7 +73,7 @@ export default {
               textAlign: this.$attrs.rtl ? "end" : "start",
               display: e.items || e.icon ? "flex" : "block",
               alignItems: "center",
-
+              justifyContent: e.items ? "space-between" : "flex-end",
               padding: "10px 0 ",
               paddingLeft: !e.items && this.$attrs.rtl ? "50px" : "5px",
               paddingRight: !e.items && !this.$attrs.rtl ? "50px" : "5px",
@@ -233,7 +233,11 @@ export default {
               }
             ]
           },
-          { text: "aaaaa", id: "root-child-3", icon: "fab fa-adversal" },
+          {
+            text: "super-long-word-aaaaaaaaaaaaaa",
+            id: "root-child-3",
+            icon: "fab fa-adversal"
+          },
           { text: "aaaaa", id: "root-child-4", icon: "fas fa-archway" },
           { text: "aaaaa", id: "root-child-5", icon: "fas fa-archway" },
           { text: "aaaaa", id: "root-child-6", icon: "fas fa-archway" }
