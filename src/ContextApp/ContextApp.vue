@@ -224,7 +224,7 @@ export default {
         items: [
           { text: "aaaaa", id: "root-child-1" },
           { text: "aaaaa", id: "root-child-2" },
-          { seperator: true, id: "root-child-sep" },
+          { seperator: true, id: "root-child-sep-1" },
           {
             selectedOption: null,
             selectedOptionEcho: null,
@@ -257,6 +257,7 @@ export default {
               }
             ]
           },
+          { seperator: true, id: "root-child-sep-2" },
           {
             text: "super-long-word-aaaaaaaaaaaaaa",
             id: "root-child-3",
@@ -447,7 +448,7 @@ span {
   font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 }
 .context-child-lgl-rtl {
-    border-top-right-radius: 0px !important;
+  border-top-right-radius: 0px !important;
   > span:first-child {
     margin-top: 5px;
     // border-top-left-radius: 5px;
@@ -472,7 +473,7 @@ span {
   background: white;
 }
 .context-child-lgl-ltr {
-   border-top-left-radius: 0px !important;
+  border-top-left-radius: 0px !important;
   > span:first-child {
     // border-top-left-radius: 5px;
     margin-top: 5px;
