@@ -135,7 +135,7 @@ export default {
                 "div",
                 {
                   // on: { onmouseover : this.onContextClick, click: this.onContextClick },
-                  class: `${e.id}-childs context-child-lgl ${this.$attrs.target}-context`,
+                  class: `${e.id}-childs context-child-lgl-${this.$attrs.rtl? 'rtl': 'ltr'} ${this.$attrs.target}-context`,
                   style: {
                     // width: "150%",
                     display: `${
@@ -372,7 +372,8 @@ export default {
     colapseExpanded() {
       this.isContextVisable = false;
       const allChilds = document.querySelectorAll(
-        `.${this.$attrs.target}-context.context-child-lgl`
+        
+        `.${this.$attrs.target}-context.context-child-lgl-${this.$attrs.rtl? 'rtl': 'ltr'}`
       );
       allChilds.forEach(e => (e.style.display = "none"));
 
@@ -425,10 +426,32 @@ span {
   font-size: 16px;
   font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 }
-.context-child-lgl {
+.context-child-lgl-rtl {
   > span:first-child {
     border-top-left-radius: 5px;
     // border-top-right-radius: 5px;
+    span {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+  }
+  > span:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    > span {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
+  position: fixed;
+  border-radius: 5px;
+  box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.24);
+  background: white;
+}
+.context-child-lgl-ltr {
+  > span:first-child {
+    // border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     span {
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
