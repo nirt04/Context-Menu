@@ -265,6 +265,7 @@ export default {
           },
           { text: "aaaaa", id: "root-child-4", icon: "fas fa-archway" },
           { text: "aaaaa", id: "root-child-5", icon: "fas fa-archway" },
+           { seperator: true, id: "root-child-sep-3" },
           { text: "aaaaa", id: "root-child-6", icon: "fas fa-archway" }
         ]
       },
