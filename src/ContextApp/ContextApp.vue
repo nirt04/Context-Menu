@@ -77,10 +77,13 @@ export default {
               paddingLeft: !e.items && this.$attrs.rtl ? "50px" : "5px",
               paddingRight: !e.items && !this.$attrs.rtl ? "50px" : "5px",
               background: `${
-                this.findContextItemById(parentId) &&
-                (this.findContextItemById(parentId).selectedOption === e.id ||
-                  this.findContextItemById(parentId).selectedOptionEcho ===
-                    e.id)
+                (this.findContextItemById(parentId) &&
+                  this.findContextItemById(parentId).selectedOption === e.id 
+                  // &&
+                  // !this.backgroundHoverHidden
+                  
+                  ) ||
+                this.findContextItemById(parentId).selectedOptionEcho === e.id
                   ? "orange"
                   : "white"
               }`
@@ -188,6 +191,7 @@ export default {
         screenY: 0,
         screenX: 0
       },
+      backgroundHoverHidden: false,
       contextItemsCloned: null,
       contextItems: {
         id: "root",
@@ -246,13 +250,16 @@ export default {
   },
   methods: {
     setElementPosition(el, parentEl, id, rtl, final) {
-
-      const contextContainerEl = document.querySelector( `.${this.$attrs.target}-context.${id}` );
+      const contextContainerEl = document.querySelector(
+        `.${this.$attrs.target}-context.${id}`
+      );
       const parentBound = parentEl.getBoundingClientRect();
-      if (!rtl) el.style.left = `${parentBound.x + contextContainerEl.clientWidth}px`;
+      if (!rtl)
+        el.style.left = `${parentBound.x + contextContainerEl.clientWidth}px`;
       else el.style.left = `${parentBound.x - el.clientWidth}px`;
       el.style.top = `${parentBound.y - 5}px`;
-      if (this.isElementOverflowScreenY(el)) el.style.top = `${window.innerHeight - el.clientHeight - 5 || 1}px`;
+      if (this.isElementOverflowScreenY(el))
+        el.style.top = `${window.innerHeight - el.clientHeight - 5 || 1}px`;
       if (this.isElementOverflowScreenX(el) && !final) {
         this.setElementPosition(el, parentEl, id, !rtl, "final");
       }
@@ -281,6 +288,7 @@ export default {
         if (context.selectedOption !== undefined) {
           context.selectedOption = null;
           context.selectedOptionEcho = null;
+          // this.backgroundHoverHidden = true;
         }
         if (context.items) {
           context.items.forEach(e => {
@@ -288,28 +296,40 @@ export default {
           });
         }
       };
-
+   
       const parent = this.findContextItemById(parentId);
       const curSelected =
         this.findContextItemById(parent.selectedOption) || null;
       if (parent.selectedOptionEcho !== undefined) {
+          //  this.backgroundHoverHidden = true;
         parent.selectedOptionEcho = optionId;
+
+        //  this.backgroundHoverHidden = false;
       }
 
       if (!parent.selectedOption || (curSelected && !curSelected.items)) {
         resetNestedSelection(parent);
-
-        return (parent.selectedOption = optionId);
+        parent.selectedOption = optionId;
+        this.backgroundHoverHidden = false;
+        return;
       } else {
+           this.backgroundHoverHidden = true;
         setTimeout(() => {
           if (parent.selectedOptionEcho === optionId) {
             // resetNestedSelection(parent);
             parent.selectedOption = optionId;
+            this.backgroundHoverHidden = false;
           }
         }, 200);
       }
 
       //  recursive search the parent id, and set new selected option
+    },
+    isElementCanGetOverCruser(rect) {
+      const couldWeMakeContextAboveMouse =
+        rect.y - rect.height > 0 ? true : false;
+      if (couldWeMakeContextAboveMouse) return rect.y - rect.height;
+      else return false;
     },
     isElementOverflowScreenX(el) {
       const rect = el.getBoundingClientRect();
@@ -317,6 +337,8 @@ export default {
     },
     isElementOverflowScreenY(el, rect) {
       if (!rect) rect = el.getBoundingClientRect();
+      debugger;
+
       return rect.y + rect.height > window.innerHeight;
     },
     onContextExpend(id) {
@@ -361,9 +383,18 @@ export default {
           y: e.clientY,
           height: contextEl.clientHeight
         })
-      )
-        this.contextPosition.screenY =
-          window.innerHeight - contextEl.clientHeight - 5 || 1;
+      ) {
+        const isElementCanGetOverCruser = this.isElementCanGetOverCruser({
+          y: e.clientY,
+          height: contextEl.clientHeight
+        });
+        if (isElementCanGetOverCruser) {
+          this.contextPosition.screenY = isElementCanGetOverCruser;
+        } else {
+          this.contextPosition.screenY =
+            window.innerHeight - contextEl.clientHeight - 5 || 1;
+        }
+      }
       // CHECK IF ROOT CONTAINER IS in valid position
 
       this.isContextVisable = !this.isContextVisable;

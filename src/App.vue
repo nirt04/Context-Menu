@@ -24,17 +24,21 @@ export default {
 </script>
 
 <style lang="scss">
+body {
+  background: rgb(230, 230, 230);
+  margin: 0;
+}
 #legal-context-app {
   display: flex;
   justify-content: space-around;
   #div-1 {
     width: 300px;
-    height: 300px;
+    height: 100vh;
     background: green;
   }
   #div-2 {
     width: 300px;
-    height: 300px;
+    height: 100vh;
     background: red;
   }
 }
@@ -45,6 +49,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  // margin-top: 60px;
 }
 </style>
