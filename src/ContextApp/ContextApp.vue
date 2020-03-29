@@ -219,10 +219,23 @@ export default {
     },
     onOptionHover(optionId, parentId) {
       // const res =
-      const resetNestedSelection = id => {
+      const resetNestedSelection = context => {
         // TO DO
+        // return;
+
+        if (context.selectedOption !== undefined) {
+          context.selectedOption = null;
+          context.selectedOptionEcho = null;
+        }
+        if (context.items) {
+          context.items.forEach(e => {
+            // if (e.items) {
+            resetNestedSelection(e);
+            // }
+          });
+        }
       };
-      debugger;
+
       const parent = this.findContextItemById(parentId);
       const curSelected =
         this.findContextItemById(parent.selectedOption) || null;
@@ -231,13 +244,13 @@ export default {
       }
 
       if (!parent.selectedOption || (curSelected && !curSelected.items)) {
-        resetNestedSelection();
+        resetNestedSelection(parent);
 
         return (parent.selectedOption = optionId);
       } else {
         setTimeout(() => {
           if (parent.selectedOptionEcho === optionId) {
-            resetNestedSelection();
+            // resetNestedSelection(parent);
             parent.selectedOption = optionId;
           }
         }, 200);
@@ -277,7 +290,6 @@ export default {
     },
     /* eslint-disable */
     colapseExpanded() {
-      debugger;
       this.isContextVisable = false;
       const allChilds = document.querySelectorAll(
         `.${this.$attrs.target}-context.context-child-lgl`
@@ -313,14 +325,14 @@ export default {
       console.log("Context clicked over", elContextTarget);
     });
     window.addEventListener("click", e => {
-      // this.debugger;
+      // this.
       if (!e.target || !e.target.classList.contains(this.$attrs.target))
         this.colapseExpanded();
     });
     window.legalContext = this;
 
     eventBus.$on("windowContextMenu", target => {
-      // debugger;
+      //
       // return;
       if (target !== this.$attrs.target) this.colapseExpanded();
     });

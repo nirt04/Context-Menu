@@ -23,7 +23,7 @@ export default {
     // window.oncontextmenu = e => {
     //   // TODO Event Bus
     //   eventBus.$emit("windowContextMenu", e);
-    //   // debugger;
+    //   // 
     // };
   },
   name: "App",
