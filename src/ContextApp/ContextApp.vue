@@ -426,8 +426,8 @@ span {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     span {
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
+      // border-bottom-left-radius: 5px;
+      // border-bottom-right-radius: 5px;
     }
   }
   position: fixed;
