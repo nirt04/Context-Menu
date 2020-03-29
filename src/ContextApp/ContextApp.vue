@@ -8,7 +8,6 @@ export default {
   /* eslint-disable */
   render: function(createElement) {
     let contextItems = [];
-
     const renderRecursive = (items, parentId) => {
       let res = items.map(e => {
         const extendedLeft = createElement("i", {
@@ -247,22 +246,13 @@ export default {
   },
   methods: {
     setElementPosition(el, parentEl, id, rtl, final) {
-      debugger;
-      // return;
-      const contextContainerEl = document.querySelector(
-        `.${this.$attrs.target}-context.${id}`
-      );
+
+      const contextContainerEl = document.querySelector( `.${this.$attrs.target}-context.${id}` );
       const parentBound = parentEl.getBoundingClientRect();
-      if (!rtl)
-        el.style.left = `${parentBound.x + contextContainerEl.clientWidth}px`;
+      if (!rtl) el.style.left = `${parentBound.x + contextContainerEl.clientWidth}px`;
       else el.style.left = `${parentBound.x - el.clientWidth}px`;
-
-      // el.style.left = `${parentBound.x - contextContainerEl.clientWidth}px`;
       el.style.top = `${parentBound.y - 5}px`;
-      debugger;
-      if (this.isElementOverflowScreenY(el))
-        el.style.top = `${window.innerHeight - el.clientHeight - 5 || 1}px`;
-
+      if (this.isElementOverflowScreenY(el)) el.style.top = `${window.innerHeight - el.clientHeight - 5 || 1}px`;
       if (this.isElementOverflowScreenX(el) && !final) {
         this.setElementPosition(el, parentEl, id, !rtl, "final");
       }
