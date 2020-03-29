@@ -250,7 +250,7 @@ export default {
       const parentBound = parentEl.getBoundingClientRect();
       if (!rtl)
         el.style.left = `${parentBound.x + contextContainerEl.clientWidth -1}px`;
-      else el.style.left = `${parentBound.x - el.clientWidth - 1}px`;
+      else el.style.left = `${parentBound.x - el.clientWidth}px`;
 
       // el.style.left = `${parentBound.x - contextContainerEl.clientWidth}px`;
       el.style.top = `${parentBound.y}px`;
