@@ -385,8 +385,7 @@ export default {
         `.${this.$attrs.target}-context.context-app--main-container`
       );
       this.contextPosition.screenY = e.clientY;
-      this.contextPosition.screenX =
-        e.clientX - contextEl.getBoundingClientRect().width;
+      this.contextPosition.screenX = e.clientX -  (this.$attrs.rtl ? contextEl.getBoundingClientRect().width : 0);
 
       // TODO CHECK IF ROOT CONTAINER IS in valid position
 
@@ -429,7 +428,7 @@ span {
 .context-child-lgl {
   > span:first-child {
     border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    // border-top-right-radius: 5px;
     span {
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
