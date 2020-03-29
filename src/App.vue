@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <!-- <div class="div-1" id="div-1">
+    <div class="div-1" id="div-1">
       LTR
-    </div> -->
+    </div>
     <div class="div-2" id="div-2">
       RTL
     </div>
