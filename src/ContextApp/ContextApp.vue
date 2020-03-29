@@ -418,7 +418,10 @@ export default {
     const elContextTarget = document.querySelector(`.${this.$attrs.target}`);
     const that = this;
     elContextTarget.addEventListener("contextmenu", e => {
+      debugger;
       e.preventDefault();
+
+      this.isContextVisable = false;
       this.onContextClick(e);
       console.log("Context clicked over", elContextTarget);
     });
@@ -503,6 +506,7 @@ span {
   background: white;
 }
 .context-app--main-container {
+  // transition: ease 2s;
   > span:first-child {
     // border-top-left-radius: 5px;
     // border-top-right-radius: 5px;
