@@ -73,7 +73,7 @@ export default {
               textAlign: this.$attrs.rtl ? "end" : "start",
               display: e.items || e.icon ? "flex" : "block",
               alignItems: "center",
-              justifyContent: e.items ? "space-between" : "flex-end",
+              justifyContent: e.items ? "space-between" : this.$attrs.rtl ? "flex-end" :  "flex-start",
               padding: "10px 0 ",
               paddingLeft: !e.items && this.$attrs.rtl ? "50px" : "5px",
               paddingRight: !e.items && !this.$attrs.rtl ? "50px" : "5px",
