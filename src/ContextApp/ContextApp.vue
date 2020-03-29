@@ -11,11 +11,72 @@ export default {
 
     const renderRecursive = (items, parentId) => {
       let res = items.map(e => {
+        const extendedLeft = createElement("i", {
+          class: "fas fa-caret-left",
+          style: {
+            color: "#737373"
+          }
+        });
+        const extendedRight = createElement("i", {
+          class: "fas fa-caret-right",
+          style: {
+            color: "#737373"
+          }
+        });
+        const icon = createElement("i", {
+          style: {
+            color: "#737373",
+            marginLeft: this.$attrs.rtl ? "5px" : "unset",
+            marginRight: !this.$attrs.rtl ? "5px" : "unset"
+          },
+          class: e.icon
+        });
+
+        const textEl = createElement(
+          "span",
+          {
+            style: {
+              display: "inline-block",
+              paddingLeft: this.$attrs.rtl && e.items ? "50px" : "unset",
+              paddingRight: !this.$attrs.rtl && e.items ? "50px" : "unset"
+            }
+          },
+          e.text
+        );
+        const textWithIcon = createElement(
+          "span",
+          {
+            style: {
+              // paddingLeft: this.$attrs.rtl && e.items ? "50px" : "unset",
+              // paddingRight: !this.$attrs.rtl && e.items ? "50px" : "unset"
+            }
+          },
+          this.$attrs.rtl ? [textEl, icon] : [icon, textEl]
+        );
+        const iconTextCompute = () => {
+          if (e.icon) {
+            debugger;
+            return this.$attrs.rtl ? [textEl, icon] : [icon, textEl];
+          } else return [textEl];
+        };
+        const contentElements = () => {
+          if (e.items && this.$attrs.rtl)
+            return [extendedLeft, iconTextCompute()];
+          else if (e.items && !this.$attrs.rtl)
+            return [iconTextCompute(), extendedRight];
+          else return [iconTextCompute()];
+        };
         const p = createElement(
           "span",
           {
             style: {
-              // padding: 0,
+              textAlign: this.$attrs.rtl ? "end" : "start",
+              display: e.items || e.icon ? "flex" : "block",
+              alignItems: "center",
+
+              padding: "10px 0 ",
+              paddingLeft: !e.items && this.$attrs.rtl ? "50px" : "5px",
+              paddingRight: !e.items && !this.$attrs.rtl ? "50px" : "5px",
               background: `${
                 this.findContextItemById(parentId) &&
                 (this.findContextItemById(parentId).selectedOption === e.id ||
@@ -35,9 +96,7 @@ export default {
             }
           },
 
-          `${e.items && this.$attrs.rtl ? "<" : ""} ${e.text} ${
-            e.items && !this.$attrs.rtl ? ">" : ""
-          }`
+          contentElements()
         );
         if (e.items) {
           // if items we want to listen hover and visable true his childs accordins to his fixed pos
@@ -71,6 +130,7 @@ export default {
                   // on: { onmouseover : this.onContextClick, click: this.onContextClick },
                   class: `${e.id}-childs context-child-lgl ${this.$attrs.target}-context`,
                   style: {
+                    // width: "150%",
                     display: `${
                       this.findContextItemById(parentId) &&
                       this.findContextItemById(parentId).selectedOption === e.id
@@ -148,10 +208,13 @@ export default {
         selectedOption: null,
         selectedOptionEcho: null,
         items: [
+          { text: "aaaaa", id: "root-child-1" },
+          { text: "aaaaa", id: "root-child-2" },
           {
             selectedOption: null,
             selectedOptionEcho: null,
             id: "parent1",
+
             text: "parent1",
             items: [
               { id: "parent1-child-1", text: "itemb" },
@@ -170,12 +233,10 @@ export default {
               }
             ]
           },
-          { text: "aaaaa", id: "root-child-1" },
-          { text: "aaaaa", id: "root-child-2" },
-          { text: "aaaaa", id: "root-child-3" },
-          { text: "aaaaa", id: "root-child-4" },
-          { text: "aaaaa", id: "root-child-5" },
-          { text: "aaaaa", id: "root-child-6" }
+          { text: "aaaaa", id: "root-child-3", icon: "fab fa-adversal" },
+          { text: "aaaaa", id: "root-child-4", icon: "fas fa-archway" },
+          { text: "aaaaa", id: "root-child-5", icon: "fas fa-archway" },
+          { text: "aaaaa", id: "root-child-6", icon: "fas fa-archway" }
         ]
       },
       isContextVisable: false
@@ -341,19 +402,51 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+span {
+  font-size: 16px;
+  font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
+}
 .context-child-lgl {
+  > span:first-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    span {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+  }
+  > span:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    span {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  }
   position: fixed;
+  border-radius: 5px;
   box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.24);
   background: white;
 }
 .context-app--main-container {
+  > span:last-child {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+  > span:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  border-radius: 5px;
   box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.24);
   position: fixed;
   // padding: 10px;
   background: white;
   color: black;
   span {
-    padding: 5px;
+    // text-align: end;
+    // padding: 5px;
+    // padding-left: 50px;
     display: block;
   }
 }

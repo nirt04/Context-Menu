@@ -1,16 +1,13 @@
 <template>
   <div id="app">
-    <h1>hello</h1>
-    <div class="div-1" id="div-1">
+    <!-- <div class="div-1" id="div-1">
       LTR
-    </div>
+    </div> -->
     <div class="div-2" id="div-2">
       RTL
     </div>
     <ContextApp :target="'div-1'" />
     <ContextApp :rtl="true" :target="'div-2'" />
-    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   </div>
 </template>
 
