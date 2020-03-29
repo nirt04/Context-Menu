@@ -56,7 +56,10 @@ export default {
         const iconTextCompute = () => {
           if (e.icon) {
             debugger;
-            return this.$attrs.rtl ? [textEl, icon] : [icon, textEl];
+
+            return this.$attrs.rtl
+              ? createElement("span", {}, [textEl, icon])
+              : createElement("span", {}, [icon, textEl]);
           } else return [textEl];
         };
         const contentElements = () => {
@@ -218,7 +221,7 @@ export default {
             selectedOption: null,
             selectedOptionEcho: null,
             id: "parent1",
-
+            icon: "fas fa-archway",
             text: "parent1",
             items: [
               { id: "parent1-child-1", text: "itemb" },
@@ -265,8 +268,7 @@ export default {
       );
       const parentBound = parentEl.getBoundingClientRect();
       if (!rtl)
-        el.style.left = `${parentBound.x +
-          contextContainerEl.clientWidth}px`;
+        el.style.left = `${parentBound.x + contextContainerEl.clientWidth}px`;
       else el.style.left = `${parentBound.x - el.clientWidth}px`;
 
       // el.style.left = `${parentBound.x - contextContainerEl.clientWidth}px`;
