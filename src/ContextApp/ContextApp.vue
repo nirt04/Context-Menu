@@ -249,7 +249,9 @@ export default {
       );
       const parentBound = parentEl.getBoundingClientRect();
       if (!rtl)
-        el.style.left = `${parentBound.x + contextContainerEl.clientWidth -1}px`;
+        el.style.left = `${parentBound.x +
+          contextContainerEl.clientWidth -
+          1}px`;
       else el.style.left = `${parentBound.x - el.clientWidth}px`;
 
       // el.style.left = `${parentBound.x - contextContainerEl.clientWidth}px`;
@@ -429,13 +431,21 @@ span {
   background: white;
 }
 .context-app--main-container {
-  > span:last-child {
+  > span:first-child {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+    span {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
   }
   > span:last-child {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+    span {
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
   }
   border-radius: 5px;
   box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.24);
