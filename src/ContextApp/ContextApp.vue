@@ -405,6 +405,7 @@ export default {
 
 <style lang="scss" scoped>
 span {
+  cursor: pointer;
   font-size: 16px;
   font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 }
