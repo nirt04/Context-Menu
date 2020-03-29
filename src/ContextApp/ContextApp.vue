@@ -45,12 +45,7 @@ export default {
         );
         const textWithIcon = createElement(
           "span",
-          {
-            style: {
-              // paddingLeft: this.$attrs.rtl && e.items ? "50px" : "unset",
-              // paddingRight: !this.$attrs.rtl && e.items ? "50px" : "unset"
-            }
-          },
+          {},
           this.$attrs.rtl ? [textEl, icon] : [icon, textEl]
         );
         const iconTextCompute = () => {
@@ -112,7 +107,6 @@ export default {
         }
         if (e.items) {
           // if items we want to listen hover and visable true his childs accordins to his fixed pos
-
           // childs visablity is computed that checking visable childs class var and check if his class is included
           return createElement(
             "span",
@@ -140,7 +134,7 @@ export default {
                 "div",
                 {
                   // on: { onmouseover : this.onContextClick, click: this.onContextClick },
-                  class: `${e.id}-childs context-child-lgl-${
+                  class: `${e.id}-childs context-child-lgl context-child-lgl-${
                     this.$attrs.rtl ? "rtl" : "ltr"
                   } ${this.$attrs.target}-context`,
                   style: {
@@ -168,11 +162,7 @@ export default {
       this.contextItems.id
     );
 
-    // TODO Visablity hidden every inner class unless he's targeted by the hover class track var
-
-    // const contextItems = this.contextItems.map(e =>
-    //   createElement("div", e.text)
-    // );
+    //  Visablity hidden every inner class unless he's targeted by the hover class track var
 
     return createElement(
       "div",
@@ -181,7 +171,6 @@ export default {
           blur: () => {
             this.isContextVisable = false;
             this.colapseExpanded();
-            // this.onOptionHover(e.id, parentId);
           }
         },
         style: {
@@ -194,24 +183,8 @@ export default {
       contextItems
     );
   },
-  computed: {
-    // rtlLeftPostion() {
-    //   // return this.data
-    // }
-  },
-  watch: {
-    // isContextVisable(newValue, oldValue) {
-    //   if (!newValue) {
-    //     const allChilds = document.querySelectorAll(
-    //       `.${this.$attrs.target}-context.context-child-lgl`
-    //     );
-    //     allChilds.forEach(e => (e.style.display = "none"));
-    //   }
-    // }
-  },
   data() {
     return {
-      visableChilds: [],
       contextPosition: {
         screenY: 0,
         screenX: 0
@@ -290,7 +263,7 @@ export default {
       if (this.isElementOverflowScreenY(el))
         el.style.top = `${window.innerHeight - el.clientHeight - 5 || 1}px`;
 
-      if (this.isElementOverflowScreen(el) && !final) {
+      if (this.isElementOverflowScreenX(el) && !final) {
         this.setElementPosition(el, parentEl, id, !rtl, "final");
       }
     },
@@ -312,23 +285,16 @@ export default {
       };
 
       return recursiveSearch(this.contextItems.items);
-      // return item;
     },
     onOptionHover(optionId, parentId) {
-      // const res =
       const resetNestedSelection = context => {
-        // TO DO
-        // return;
-
         if (context.selectedOption !== undefined) {
           context.selectedOption = null;
           context.selectedOptionEcho = null;
         }
         if (context.items) {
           context.items.forEach(e => {
-            // if (e.items) {
             resetNestedSelection(e);
-            // }
           });
         }
       };
@@ -353,37 +319,15 @@ export default {
         }, 200);
       }
 
-      // this.contextItems
-
-      // we need to recursive search the parent id, and set new selected option
+      //  recursive search the parent id, and set new selected option
     },
-    isElementOverflowScreen(el) {
+    isElementOverflowScreenX(el) {
       const rect = el.getBoundingClientRect();
-
-      return (
-        rect.x < 0 || rect.y < 0
-        // ||
-        // rect.x + rect.width < 0 ||
-        // rect.y + rect.height < 0 ||
-        // rect.x > window.innerWidth ||
-        // rect.y > window.innerHeight
-      );
+      return rect.x < 0 || rect.y < 0;
     },
     isElementOverflowScreenY(el, rect) {
-      debugger;
-      // const rect =
       if (!rect) rect = el.getBoundingClientRect();
-
-      return (
-        rect.y + rect.height > window.innerHeight
-
-        // rect.x < 0 || rect.y < 0
-        // ||
-        // rect.x + rect.width < 0 ||
-        // rect.y + rect.height < 0 ||
-        // // rect.x > window.innerWidth ||
-        // rect.y > window.innerHeight
-      );
+      return rect.y + rect.height > window.innerHeight;
     },
     onContextExpend(id) {
       const parentEl = document.querySelector(
@@ -394,12 +338,6 @@ export default {
       );
 
       this.setElementPosition(el, parentEl, id, this.$attrs.rtl);
-      // el.style.display = "block";
-
-      // el.style.left = `${parentEl.bound.x + contextContainerEl.clientWidth}px`;
-      // el.style.top = `${parentEl.bound.y}px`;
-      // el.style.display = "block";
-      // el.postion;
     },
     /* eslint-disable */
     colapseExpanded() {
@@ -436,7 +374,7 @@ export default {
       )
         this.contextPosition.screenY =
           window.innerHeight - contextEl.clientHeight - 5 || 1;
-      // TODO CHECK IF ROOT CONTAINER IS in valid position
+      // CHECK IF ROOT CONTAINER IS in valid position
 
       this.isContextVisable = !this.isContextVisable;
       if (!this.isContextVisable) {
@@ -449,7 +387,6 @@ export default {
     const that = this;
     elContextTarget.addEventListener("contextmenu", e => {
       e.preventDefault();
-
       this.isContextVisable = false;
       this.onContextClick(e);
       console.log("Context clicked over", elContextTarget);
@@ -458,7 +395,6 @@ export default {
       this.colapseExpanded();
     });
     window.addEventListener("click", e => {
-      // this.
       if (!e.target || !e.target.classList.contains(this.$attrs.target))
         this.colapseExpanded();
     });
@@ -483,87 +419,37 @@ span {
   font-size: 16px;
   font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif;
 }
-.context-child-lgl-rtl {
-  border-top-right-radius: 0px !important;
+.context-child-lgl {
   > span:first-child {
     margin-top: 5px;
-    // border-top-left-radius: 5px;
-    // border-top-right-radius: 5px;
-    span {
-      // border-top-left-radius: 5px;
-      // border-top-right-radius: 5px;
-    }
   }
   > span:last-child {
     margin-bottom: 5px;
-    // border-bottom-left-radius: 5px;
-    // border-bottom-right-radius: 5px;
-    // > span {
-    //   border-bottom-left-radius: 5px;
-    //   border-bottom-right-radius: 5px;
-    // }
   }
   position: fixed;
   border-radius: 5px;
   box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.24);
   background: white;
+}
+.context-child-lgl-rtl {
+  border-top-right-radius: 0px !important;
 }
 .context-child-lgl-ltr {
   border-top-left-radius: 0px !important;
-  > span:first-child {
-    // border-top-left-radius: 5px;
-    margin-top: 5px;
-    // border-top-right-radius: 5px;
-    span {
-      // border-top-left-radius: 5px;
-      // border-top-right-radius: 5px;
-    }
-  }
-  > span:last-child {
-    margin-bottom: 5px;
-    // border-bottom-left-radius: 5px;
-    // border-bottom-right-radius: 5px;
-    > span {
-      //  margin-bottom: 5px;
-      // border-bottom-left-radius: 5px;
-      // border-bottom-right-radius: 5px;
-    }
-  }
-  position: fixed;
-  border-radius: 5px;
-  box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.24);
-  background: white;
 }
 .context-app--main-container {
-  // transition: ease 2s;
   > span:first-child {
-    // border-top-left-radius: 5px;
-    // border-top-right-radius: 5px;
     margin-top: 5px;
-    > span {
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-    }
   }
   > span:last-child {
     margin-bottom: 5px;
-    // border-bottom-left-radius: 5px;
-    // border-bottom-right-radius: 5px;
-    > span {
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
   }
   border-radius: 5px;
   box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.24);
   position: fixed;
-  // padding: 10px;
   background: white;
   color: black;
   span {
-    // text-align: end;
-    // padding: 5px;
-    // padding-left: 50px;
     display: block;
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="legal-context-app">
     <div class="div-1" id="div-1">
       LTR
     </div>
@@ -14,26 +14,17 @@
 <script>
 /* eslint-disable */
 import ContextApp from "./ContextApp/ContextApp.vue";
-// import HelloWorld from './components/HelloWorld.vue'
 import { eventBus } from "./main";
 export default {
-  mounted() {
-    // window.oncontextmenu = e => {
-    //   // TODO Event Bus
-    //   eventBus.$emit("windowContextMenu", e);
-    //   //
-    // };
-  },
   name: "App",
   components: {
     ContextApp
-    // HelloWorld, ContextApp
   }
 };
 </script>
 
 <style lang="scss">
-#app {
+#legal-context-app {
   display: flex;
   justify-content: space-around;
   #div-1 {
@@ -48,7 +39,7 @@ export default {
   }
 }
 
-#app {
+#legal-context-app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
