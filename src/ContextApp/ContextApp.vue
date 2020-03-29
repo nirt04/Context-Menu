@@ -265,7 +265,7 @@ export default {
           },
           { text: "aaaaa", id: "root-child-4", icon: "fas fa-archway" },
           { text: "aaaaa", id: "root-child-5", icon: "fas fa-archway" },
-           { seperator: true, id: "root-child-sep-3" },
+          { seperator: true, id: "root-child-sep-3" },
           { text: "aaaaa", id: "root-child-6", icon: "fas fa-archway" }
         ]
       },
@@ -421,6 +421,9 @@ export default {
       e.preventDefault();
       this.onContextClick(e);
       console.log("Context clicked over", elContextTarget);
+    });
+    elContextTarget.addEventListener("click", e => {
+      this.colapseExpanded();
     });
     window.addEventListener("click", e => {
       // this.
