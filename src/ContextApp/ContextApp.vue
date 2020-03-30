@@ -3,7 +3,6 @@
 import { eventBus } from "../main";
 export default {
   created() {
-    debugger;
     this.contextItems = this.injectInitAttributesToItems({ items: this.items });
     this.contextItemsCloned = JSON.parse(JSON.stringify(this.contextItems));
   },
@@ -15,6 +14,7 @@ export default {
   },
   render: function(createElement) {
     let contextItems = [];
+    this.$emit("beforeOpen");
     const renderRecursive = (items, parentId) => {
       let res = items.map(e => {
         const extendedLeft = createElement("i", {
@@ -98,9 +98,19 @@ export default {
             },
             class: `${e.id || ""} ${this.$attrs.target}-context`,
             on: {
+              click: event => {
+                debugger;
+                // window.test = that
+                this.$emit("onItemSelect", {
+                  event: event,
+                  element: event.target,
+                  item: e
+                });
+                // that.onContextItemClick(event, e);
+              },
               mouseover: () => {
                 // BUG DOESNT ALLWAYS TRIGGER
-
+                //
                 this.onOptionHover(e.id, parentId);
               }
             }
@@ -111,7 +121,8 @@ export default {
         if (e.seperator) {
           return createElement("hr", {
             style: {
-              opacity: "0.35"
+              borderColor: " #ffffff7d"
+              // opacity: "0.35"
             }
           });
         }
@@ -180,6 +191,7 @@ export default {
         on: {
           blur: () => {
             this.isContextVisable = false;
+            this.$emit("onClose");
             this.colapseExpanded();
           }
         },
@@ -316,7 +328,6 @@ export default {
     },
     isElementOverflowScreenY(el, rect) {
       if (!rect) rect = el.getBoundingClientRect();
-      debugger;
 
       return rect.y + rect.height > window.innerHeight;
     },
@@ -333,6 +344,7 @@ export default {
     /* eslint-disable */
     colapseExpanded() {
       this.isContextVisable = false;
+      this.$emit("onClose");
       const allChilds = document.querySelectorAll(
         `.${this.$attrs.target}-context.context-child-lgl-${
           this.$attrs.rtl ? "rtl" : "ltr"
@@ -379,15 +391,19 @@ export default {
       this.isContextVisable = !this.isContextVisable;
       if (!this.isContextVisable) {
         this.colapseExpanded();
+        this.$emit("onClose");
+      } else {
+        debugger;
+        this.$emit("onOpen");
       }
     }
   },
   mounted() {
     const elContextTarget = document.querySelector(`.${this.$attrs.target}`);
-    const that = this;
     elContextTarget.addEventListener("contextmenu", e => {
       e.preventDefault();
       this.isContextVisable = false;
+      this.$emit("onClose");
       this.colapseExpanded();
       this.onContextClick(e);
       console.log("Context clicked over", elContextTarget);

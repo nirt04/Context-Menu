@@ -6,8 +6,23 @@
     <div class="div-2" id="div-2">
       RTL
     </div>
-    <ContextApp :items="contextItems" :target="'div-1'" />
-    <ContextApp :rtl="true" :items="contextItems" :target="'div-2'" />
+    <ContextApp
+      @onClose="onClose"
+      @onItemSelect="onItemSelect"
+      @onOpen="onOpen"
+      @beforeOpen="beforeOpen"
+      :items="contextItems"
+      :target="'div-1'"
+    />
+    <ContextApp
+      @onClose="onClose"
+      @onOpen="onOpen"
+      @beforeOpen="beforeOpen"
+      @onItemSelect="onItemSelect"
+      :rtl="true"
+      :items="contextItems"
+      :target="'div-2'"
+    />
   </div>
 </template>
 
@@ -16,6 +31,20 @@
 import ContextApp from "./ContextApp/ContextApp.vue";
 import { eventBus } from "./main";
 export default {
+  methods: {
+    onItemSelect(item) {
+      debugger;
+    },
+    onOpen() {
+      debugger;
+    },
+    beforeOpen() {
+      debugger;
+    },
+    onClose() {
+      debugger;
+    }
+  },
   data() {
     return {
       contextItems: [
