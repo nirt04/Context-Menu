@@ -1,9 +1,6 @@
 ## Context-Menu for vue applications pre-released
 ```
-```
-## Demo
-```
-https://nirt04.github.io/ContextMenu/
+[Demo](https://nirt04.github.io/ContextMenu/)
 ```
 ## Project setup
 ```
