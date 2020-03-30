@@ -78,13 +78,14 @@ export default {
               paddingRight: !e.items && !this.$attrs.rtl ? "50px" : "5px",
               background: `${
                 (this.findContextItemById(parentId) &&
-                  this.findContextItemById(parentId).selectedOption === e.id 
-                  // &&
-                  // !this.backgroundHoverHidden
-                  
-                  ) ||
+                  this.findContextItemById(parentId).selectedOption === e.id) && 
                 this.findContextItemById(parentId).selectedOptionEcho === e.id
-                  ? "orange"
+                  ? // ||
+                    // &&
+                    // !this.backgroundHoverHidden
+
+                    // this.findContextItemById(parentId).selectedOptionEcho === e.id
+                    "orange"
                   : "white"
               }`
             },
@@ -124,7 +125,7 @@ export default {
                 background: `${
                   this.findContextItemById(parentId) &&
                   this.findContextItemById(parentId).selectedOption === e.id
-                    ? "orange"
+                    ? "white"
                     : "white"
                 }`
               },
@@ -296,12 +297,12 @@ export default {
           });
         }
       };
-   
+
       const parent = this.findContextItemById(parentId);
       const curSelected =
         this.findContextItemById(parent.selectedOption) || null;
       if (parent.selectedOptionEcho !== undefined) {
-          //  this.backgroundHoverHidden = true;
+        //  this.backgroundHoverHidden = true;
         parent.selectedOptionEcho = optionId;
 
         //  this.backgroundHoverHidden = false;
@@ -313,11 +314,12 @@ export default {
         this.backgroundHoverHidden = false;
         return;
       } else {
-           this.backgroundHoverHidden = true;
+        this.backgroundHoverHidden = true;
         setTimeout(() => {
           if (parent.selectedOptionEcho === optionId) {
             // resetNestedSelection(parent);
             parent.selectedOption = optionId;
+            // parent.selectedOptionEcho = null;
             this.backgroundHoverHidden = false;
           }
         }, 200);
@@ -473,6 +475,9 @@ span {
   color: black;
   span {
     display: block;
+    &:hover {
+      background: orange !important;
+    }
   }
 }
 </style>
