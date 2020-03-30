@@ -1,11 +1,18 @@
 <script>
+/* eslint-disable */
 import { eventBus } from "../main";
 export default {
   created() {
+    debugger;
+    this.contextItems = this.injectInitAttributesToItems({ items: this.items });
     this.contextItemsCloned = JSON.parse(JSON.stringify(this.contextItems));
   },
-
-  /* eslint-disable */
+  props: {
+    items: {
+      type: Array,
+      required: true
+    }
+  },
   render: function(createElement) {
     let contextItems = [];
     const renderRecursive = (items, parentId) => {
@@ -77,8 +84,8 @@ export default {
               paddingLeft: !e.items && this.$attrs.rtl ? "50px" : "5px",
               paddingRight: !e.items && !this.$attrs.rtl ? "50px" : "5px",
               background: `${
-                (this.findContextItemById(parentId) &&
-                  this.findContextItemById(parentId).selectedOption === e.id) && 
+                this.findContextItemById(parentId) &&
+                this.findContextItemById(parentId).selectedOption === e.id &&
                 this.findContextItemById(parentId).selectedOptionEcho === e.id
                   ? // ||
                     // &&
@@ -194,62 +201,32 @@ export default {
       },
       backgroundHoverHidden: false,
       contextItemsCloned: null,
-      contextItems: {
-        id: "root",
-        selectedOption: null,
-        selectedOptionEcho: null,
-        items: [
-          { text: "aaaaa", id: "root-child-1" },
-          { text: "aaaaa", id: "root-child-2" },
-          { seperator: true, id: "root-child-sep-1" },
-          {
-            selectedOption: null,
-            selectedOptionEcho: null,
-            id: "parent1",
-            icon: "fas fa-archway",
-            text: "parent1",
-            items: [
-              { id: "parent1-child-1", text: "itemb" },
-              { seperator: true, id: "parent1-child-sep" },
-              { id: "parent1-child-2", text: "itemb" },
-              { id: "parent1-child-3", text: "itemb" },
-              {
-                selectedOption: null,
-                selectedOptionEcho: null,
-                id: "parent2",
-                text: "parent2",
-                items: [
-                  {
-                    id: "parent2-child-1",
-                    text: "itemc",
-                    icon: "fas fa-archway"
-                  },
-                  {
-                    id: "parent2-child-2",
-                    text: "itemc",
-                    icon: "fas fa-archway"
-                  },
-                  { id: "parent2-child-3", text: "itemc" }
-                ]
-              }
-            ]
-          },
-          { seperator: true, id: "root-child-sep-2" },
-          {
-            text: "super-long-word-aaaaaaaaaaaaaa",
-            id: "root-child-3",
-            icon: "fab fa-adversal"
-          },
-          { text: "aaaaa", id: "root-child-4", icon: "fas fa-archway" },
-          { text: "aaaaa", id: "root-child-5", icon: "fas fa-archway" },
-          { seperator: true, id: "root-child-sep-3" },
-          { text: "aaaaa", id: "root-child-6", icon: "fas fa-archway" }
-        ]
-      },
+      contextItems: null,
       isContextVisable: false
     };
   },
   methods: {
+    injectInitAttributesToItems(contextItems) {
+      let parentNumber = 1;
+      const setIds = (items, nestLevel, currentParent) => {
+        items.forEach((item, i) => {
+          if (item.items) {
+            item.selectedOptionEcho = null;
+            item.selectedOption = null;
+            item.id = `parent${parentNumber++}`;
+            setIds(item.items, nestLevel + 1, item.id);
+          } else {
+            item.id = `${currentParent}-child-${i + 1}`;
+          }
+        });
+      };
+      const computedContext = JSON.parse(JSON.stringify(contextItems));
+      computedContext.id = "root";
+      computedContext.selectedOption = null;
+      computedContext.selectedOptionEcho = null;
+      setIds(computedContext.items, 0, computedContext.id);
+      return computedContext;
+    },
     setElementPosition(el, parentEl, id, rtl, final) {
       const contextContainerEl = document.querySelector(
         `.${this.$attrs.target}-context.${id}`

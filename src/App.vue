@@ -6,8 +6,8 @@
     <div class="div-2" id="div-2">
       RTL
     </div>
-    <ContextApp :target="'div-1'" />
-    <ContextApp :rtl="true" :target="'div-2'" />
+    <ContextApp :items="contextItems" :target="'div-1'" />
+    <ContextApp :rtl="true" :items="contextItems" :target="'div-2'" />
   </div>
 </template>
 
@@ -16,6 +16,45 @@
 import ContextApp from "./ContextApp/ContextApp.vue";
 import { eventBus } from "./main";
 export default {
+  data() {
+    return {
+      contextItems: [
+        { text: "aaaaa" },
+        { text: "aaaaa" },
+        { seperator: true },
+        {
+          icon: "fas fa-archway",
+          text: "parent1",
+          items: [
+            { text: "itemb" },
+            { seperator: true },
+            { text: "itemb" },
+            { text: "itemb" },
+            {
+              text: "parent2",
+              items: [
+                {
+                  text: "itemc",
+                  icon: "fas fa-archway"
+                },
+                {
+                  text: "itemc",
+                  icon: "fas fa-archway"
+                },
+                { text: "itemc" }
+              ]
+            }
+          ]
+        },
+        { seperator: true },
+        { text: "super-long-word-aaaaaaaaaaaaaa", icon: "fab fa-adversal" },
+        { text: "aaaaa", icon: "fas fa-archway" },
+        { text: "aaaaa", icon: "fas fa-archway" },
+        { seperator: true },
+        { text: "aaaaa", icon: "fas fa-archway" }
+      ]
+    };
+  },
   name: "App",
   components: {
     ContextApp
