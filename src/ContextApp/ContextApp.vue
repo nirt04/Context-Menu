@@ -85,7 +85,7 @@ export default {
                     // !this.backgroundHoverHidden
 
                     // this.findContextItemById(parentId).selectedOptionEcho === e.id
-                    "orange"
+                    "#eeeeee"
                   : "white"
               }`
             },
@@ -476,7 +476,7 @@ span {
   span {
     display: block;
     &:hover {
-      background: orange !important;
+      background: #eeeeee !important;
     }
   }
 }
