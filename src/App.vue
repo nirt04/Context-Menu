@@ -1,11 +1,12 @@
 <template>
   <div id="legal-context-app">
-    <div class="div-1" id="div-1">
-      LTR
-    </div>
     <div class="div-2" id="div-2">
       RTL
     </div>
+    <div :key="ltrText" @click="ltrText += '1'" class="div-1" id="div-1">
+      {{ ltrText }}
+    </div>
+
     <ContextApp
       @onClose="onClose"
       @onItemSelect="onItemSelect"
@@ -47,6 +48,7 @@ export default {
   },
   data() {
     return {
+      ltrText: 'LTR_',
       contextItems: [
         { text: "aaaaa" },
         { text: "aaaaa" },
@@ -100,12 +102,12 @@ body {
   display: flex;
   justify-content: space-around;
   #div-1 {
-    width: 300px;
+    width: 50%;
     height: 100vh;
     background: green;
   }
   #div-2 {
-    width: 300px;
+    width: 50%;
     height: 100vh;
     background: red;
   }

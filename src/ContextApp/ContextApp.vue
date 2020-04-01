@@ -369,6 +369,7 @@ export default {
       this.contextPosition.screenX =
         e.clientX -
         (this.$attrs.rtl ? contextEl.getBoundingClientRect().width : 0);
+      if (this.contextPosition.screenX < 0) this.contextPosition.screenX = 0;
       if (
         this.isElementOverflowScreenY(null, {
           y: e.clientY,
@@ -402,6 +403,7 @@ export default {
     const elContextTarget = document.querySelector(`.${this.$attrs.target}`);
     elContextTarget.addEventListener("contextmenu", e => {
       e.preventDefault();
+      e.stopPropagation();
       this.isContextVisable = false;
       this.$emit("onClose");
       this.colapseExpanded();
